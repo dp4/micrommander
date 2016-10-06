@@ -1,0 +1,632 @@
+//-----------------------------------------------------------------------------------------------------------------------------------------
+// description:	x64 asm source for "commander style" windows file manager - resources, resource script - German and English
+// note:	copyright © by digital performance 1997 - 2014, author S. Deutsch, A. Voelskow
+// license:
+//
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY// without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// assembler:	Visual Studio 2013
+// last update:	2013-02-20 - Deutsch - make x64
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+#	include <windows.h>
+#	include <commctrl.h>
+#	include "resource.h"
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		graphics
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	IDI_APP					ICON PRELOAD			"app.ico"
+	IDB_STARTLOGO		BITMAP PRELOAD		"logo.bmp"
+	IDB_CMDICONS		BITMAP PRELOAD		"cmdicons.bmp"
+	IDB_DEFAULT_INI		RCDATA					"default.ini"
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		menu
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+
+	IDM_APP MENU PRELOAD 
+	BEGIN
+		POPUP "&File"
+		BEGIN
+			MENUITEM "Configure ...", IDM_FILE_CONFIG
+			MENUITEM SEPARATOR
+			MENUITEM "Exit", IDM_FILE_EXIT
+		END
+		POPUP "Left"
+		BEGIN
+			MENUITEM "Icon", IDM_LEFT_SYMBOL
+			MENUITEM "Size", IDM_LEFT_SIZE
+			MENUITEM "Type", IDM_LEFT_TYPE
+			MENUITEM "Date", IDM_LEFT_DATE
+			MENUITEM SEPARATOR
+			MENUITEM "Font ...", IDM_LEFT_FONT
+			MENUITEM "Text color ...", IDM_LEFT_FGCOLOR
+			MENUITEM "Background color ...", IDM_LEFT_BGCOLOR
+		END
+		POPUP "Right"
+		BEGIN
+			MENUITEM "Icon", IDM_RIGHT_SYMBOL
+			MENUITEM "Size", IDM_RIGHT_SIZE
+			MENUITEM "Type", IDM_RIGHT_TYPE
+			MENUITEM "Date", IDM_RIGHT_DATE
+			MENUITEM SEPARATOR
+			MENUITEM "Font ...", IDM_RIGHT_FONT
+			MENUITEM "Text color ...", IDM_RIGHT_FGCOLOR
+			MENUITEM "Background color ...", IDM_RIGHT_BGCOLOR
+		END
+		POPUP "Help"
+		BEGIN
+			MENUITEM "About ...", IDM_HELP_ABOUT
+		END
+	END
+
+	LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+
+	IDM_APP MENU PRELOAD 
+	BEGIN
+		POPUP "&Datei"
+		BEGIN
+			MENUITEM "Konfiguieren", IDM_FILE_CONFIG
+			MENUITEM SEPARATOR
+			MENUITEM "Beenden", IDM_FILE_EXIT
+		END
+		POPUP "Links"
+		BEGIN
+			MENUITEM "Symbol", IDM_LEFT_SYMBOL
+			MENUITEM "Größe", IDM_LEFT_SIZE
+			MENUITEM "Typ", IDM_LEFT_TYPE
+			MENUITEM "Datum", IDM_LEFT_DATE
+			MENUITEM SEPARATOR
+			MENUITEM "Schriftart ...", IDM_LEFT_FONT
+			MENUITEM "Textfarbe ...", IDM_LEFT_FGCOLOR
+			MENUITEM "Hintergrundfarbe ...", IDM_LEFT_BGCOLOR
+		END
+		POPUP "Rechts"
+		BEGIN
+			MENUITEM "Symbol", IDM_RIGHT_SYMBOL
+			MENUITEM "Größe", IDM_RIGHT_SIZE
+			MENUITEM "Typ", IDM_RIGHT_TYPE
+			MENUITEM "Datum", IDM_RIGHT_DATE
+			MENUITEM SEPARATOR
+			MENUITEM "Schriftart ...", IDM_RIGHT_FONT
+			MENUITEM "Textfarbe ...", IDM_RIGHT_FGCOLOR
+			MENUITEM "Hintergrundfarbe ...", IDM_RIGHT_BGCOLOR
+		END
+		POPUP "Hilfe"
+		BEGIN
+			MENUITEM "Über ...", IDM_HELP_ABOUT
+		END
+	END
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		button pop up menu
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+
+	IDM_BUTTONPOP	MENU PRELOAD 
+	BEGIN
+		POPUP " ", MENUBREAK
+		BEGIN
+			MENUITEM "&Command ...", IDM_BPOP_COMMAND
+			MENUITEM "&Font ...", IDM_BPOP_FONT
+			MENUITEM "&Text color ...", IDM_BPOP_FGCOLOR
+			MENUITEM "&Shortcut ...", IDM_BPOP_SHORTCUT
+		END
+	END
+
+	LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+
+	IDM_BUTTONPOP	MENU PRELOAD
+	BEGIN
+		POPUP " ", MENUBREAK
+		BEGIN
+			MENUITEM "&Befehl ...", IDM_BPOP_COMMAND
+			MENUITEM "&Schriftart ...", IDM_BPOP_FONT
+			MENUITEM "Text&farbe ...", IDM_BPOP_FGCOLOR
+			MENUITEM "&Tastenkürzel ...", IDM_BPOP_SHORTCUT
+		END
+	END
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		dialogs - English
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+
+
+	// command progress
+
+	IDD_PROGRESS DIALOGEX 20, 40, 435, 300, 0
+	STYLE 0x0004 | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Copy files"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		CONTROL "", ID_CP_PROGRESS, "MSCTLS_PROGRESS32", WS_BORDER, 13, 10, 409, 9, 0, 0
+		LTEXT "", ID_CP_STATE, 13, 25, 362, 12
+		CONTROL "", ID_CP_TABS, "SysTabControl32", WS_CHILD, 13, 40, 409, 230, 0, 0
+		DEFPUSHBUTTON "Cancel", IDCANCEL, 354, 278, 67, 16, 0, 0, 0
+	END
+
+
+	// button configure dialog
+
+	IDD_BUTTON_CMD DIALOGEX 20, 40, 303, 200
+	STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU
+	CAPTION "Configure Button"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		CONTROL "", ID_BC_CMDLIST, WC_COMBOBOXEX, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL, 73, 5, 227, 256
+		DEFPUSHBUTTON "OK", IDOK, 232, 180, 67, 16
+		PUSHBUTTON "Cancel", IDCANCEL, 162, 180, 67, 16
+		LTEXT "Action:", -1, 4, 7, 56, 14
+		LTEXT "Text:", -1, 4, 23, 56, 14
+		LTEXT "Parameter:",	-1, 4, 39, 56, 14
+		EDITTEXT ID_BC_TEXT, 73, 23, 226, 14, ES_AUTOHSCROLL
+		EDITTEXT ID_BC_PARAM, 73, 39, 226, 14, ES_AUTOHSCROLL
+		GROUPBOX "Hint", -1, 4, 56, 295, 120
+		LTEXT "...", ID_BC_HINT, 9, 68, 285, 100
+	END
+
+
+	// create folder dialog
+
+	IDD_MAKE_DIR DIALOGEX 20, 40, 188, 73, 0
+	STYLE DS_MODALFRAME | 0x0004 | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Create folder"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		EDITTEXT ID_MK_NEWDIR, 6, 27, 174, 14, ES_AUTOHSCROLL, 0, 0
+		LTEXT "Enter folder name:", ID_MK_HINT, 32, 10, 129, 9, 0, 0
+		DEFPUSHBUTTON "OK", IDOK, 44, 55, 67, 16
+		PUSHBUTTON "Cancel", IDCANCEL, 116, 55, 67, 16
+	END
+
+
+	// element size information
+
+	IDD_BYTEINFO DIALOGEX 20, 40, 188, 85, 0
+	STYLE DS_MODALFRAME | 0x0004 | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Selected files"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		DEFPUSHBUTTON "OK", IDOK, 67, 65, 67, 16, 0, 0, 0
+		LTEXT "Number of folders:", 5240, 13, 11, 80, 12, 0, 0
+		LTEXT "Number of files:", 5250, 13, 26, 80, 12, 0, 0
+		LTEXT "Size in bytes:", 5260, 13, 40, 80, 12, 0, 0
+		LTEXT "", ID_BI_DIRECTORY, 103, 11, 40, 12
+		LTEXT "", ID_BI_FILES, 103, 26, 40, 12
+		LTEXT "", ID_BI_BYTES, 103, 40, 80, 12
+	END
+	
+
+	// rename dialog
+
+	IDD_RENAME DIALOGEX 20, 40, 260, 54
+	STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | 0x0004
+	CAPTION "Rename file"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		LTEXT "File name:",	5360, 10, 10, 60, 8
+		EDITTEXT ID_RM_FILENAME, 80, 10, 166, 12, ES_AUTOHSCROLL
+		DEFPUSHBUTTON "OK", IDOK, 110, 33, 67, 16
+		PUSHBUTTON "Cancel", IDCANCEL, 180, 33, 67, 16
+	END
+
+
+	// main configure dialog
+
+	IDD_CONFIGURE DIALOGEX MOVEABLE LOADONCALL 105, 134, 212, 127
+	STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU
+	CAPTION "Configuration"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		GROUPBOX "Number of buttons",	-1, 5, 5, 201, 48
+		RTEXT "Columns (4-12):", -1, 60, 17, 85, 9
+		EDITTEXT -1, 153, 15, 40, 14, ES_NUMBER
+		CONTROL "", ID_CF_BUTTONCOLS, "msctls_updown32", UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_SETBUDDYINT | WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP, 153, 16, 40, 13
+		RTEXT "Rows (1-8):", -1, 60, 36, 85, 9
+		EDITTEXT -1, 153, 34, 40, 14, ES_NUMBER
+		CONTROL "", ID_CF_BUTTONROWS, "msctls_updown32", UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_SETBUDDYINT | WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP, 153, 35, 40, 13
+		PUSHBUTTON "Cancel", IDCANCEL, 140, 109, 67, 16
+		DEFPUSHBUTTON "OK", IDOK, 70, 109, 67, 16
+		GROUPBOX "Options", -1, 5, 55, 201, 48
+		AUTOCHECKBOX "confirm delete", ID_CF_DELCONFIRM, 13, 67, 186, 12
+	END
+
+
+	// record keyboard shortcut
+
+	IDD_SHORTCUT DIALOGEX MOVEABLE LOADONCALL 	20, 40, 180, 54, 0
+	STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Enter keyboard shortcut"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		LTEXT "Enter shortcut:", -1, 10, 10, 129, 14
+		EDITTEXT ID_SC_KEY, 80, 8, 80, 14
+		DEFPUSHBUTTON "OK", IDOK, 30, 33, 67, 16
+		PUSHBUTTON "Cancel", IDCANCEL, 100, 33, 67, 16
+	END
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		dialogs - German
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+
+
+	// progress dialog
+
+	IDD_PROGRESS DIALOGEX 20, 40, 435, 300, 0
+	STYLE 0x0004 | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Dateien kopieren"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		CONTROL "", ID_CP_PROGRESS, "MSCTLS_PROGRESS32", WS_BORDER, 13, 10, 409, 9, 0, 0
+		LTEXT "", ID_CP_STATE, 13, 25, 362, 12
+		CONTROL "", ID_CP_TABS, "SysTabControl32", WS_CHILD, 13, 40, 409, 230, 0, 0
+		DEFPUSHBUTTON "Abbrechen", IDCANCEL, 354, 278, 67, 16, 0, 0, 0
+	END
+
+
+	// button configure dialog
+
+	IDD_BUTTON_CMD DIALOGEX	20, 40, 303, 200
+	STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU
+	CAPTION "Befehl Konfigurieren"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		CONTROL "", ID_BC_CMDLIST, WC_COMBOBOXEX, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL, 73, 5, 227, 256
+		DEFPUSHBUTTON "OK", IDOK, 232, 180, 67, 16
+		PUSHBUTTON "Abbrechen", IDCANCEL, 162, 180, 67, 16
+		LTEXT "Aktion:", -1, 4, 7, 56, 14
+		LTEXT "Text:", -1, 4, 23, 56, 14
+		LTEXT "Parameter:", -1, 4, 39, 56, 14
+		EDITTEXT ID_BC_TEXT, 73, 23, 226, 14, ES_AUTOHSCROLL
+		EDITTEXT ID_BC_PARAM, 73, 39, 226, 14, ES_AUTOHSCROLL
+		GROUPBOX "Hinweis", -1, 4, 56, 295, 120
+		LTEXT "...", ID_BC_HINT, 9, 68, 285, 100
+	END
+
+
+	// make directory
+
+	IDD_MAKE_DIR DIALOGEX MOVEABLE LOADONCALL 	20, 40, 188, 73, 0
+	STYLE DS_MODALFRAME | 0x0004 | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Verzeichnis erstellen"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		EDITTEXT ID_MK_NEWDIR, 6, 27, 174, 14, ES_AUTOHSCROLL | ES_LEFT, 0, 0
+		LTEXT "Legen Sie den Verzeichnisnamen fest:",	ID_MK_HINT, 32, 10, 129, 9, 0, 0
+		DEFPUSHBUTTON "OK", IDOK, 44, 55, 67, 16
+		PUSHBUTTON "Abbrechen", IDCANCEL, 116, 55, 67, 16
+	END
+
+
+	// element size information
+
+	IDD_BYTEINFO DIALOGEX MOVEABLE LOADONCALL 	20, 40, 188, 85, 0
+	STYLE DS_MODALFRAME | 0x0004 | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Selektierte Dateien"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		DEFPUSHBUTTON "OK", IDOK, 	67, 65, 67, 16, 0, 0, 0
+		LTEXT "Anzahl Verzeichnisse:", 5240, 13, 11, 80, 12, 0, 0
+		LTEXT "Anzahl Dateien:", 5250, 13, 26, 80, 12, 0, 0
+		LTEXT "Bytes gesamt:", 5260, 13, 40, 80, 12, 0, 0
+		LTEXT "", ID_BI_DIRECTORY, 103, 11, 40, 12
+		LTEXT "", ID_BI_FILES, 103, 26, 40, 12
+		LTEXT "", ID_BI_BYTES, 103, 40, 80, 12
+	END
+	
+
+	// rename dialog
+
+	IDD_RENAME DIALOGEX MOVEABLE LOADONCALL 20, 40, 260, 54
+	STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | 0x0004
+	CAPTION "Datei umbenennen"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		LTEXT "Dateiname:", 5360, 10, 10, 60, 8
+		EDITTEXT ID_RM_FILENAME, 80, 10, 166, 12, ES_AUTOHSCROLL
+		DEFPUSHBUTTON "OK", IDOK, 110, 33, 67, 16
+		PUSHBUTTON "Abbrechen", IDCANCEL, 180, 33, 67, 16
+	END
+
+
+	// main configure dialog
+
+	IDD_CONFIGURE DIALOGEX MOVEABLE LOADONCALL 105, 134, 212, 127
+	STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU
+	CAPTION "Konfiguration"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		GROUPBOX "Anzahl der Buttons",	-1, 5, 5, 201, 48
+		RTEXT "Spalten (4-12):", -1, 60, 17, 85, 9
+		EDITTEXT -1, 153, 15, 40, 14, ES_NUMBER
+		CONTROL "", ID_CF_BUTTONCOLS, "msctls_updown32", UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_SETBUDDYINT | WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP, 153, 16, 40, 13
+		RTEXT "Zeilen (1-8):", -1, 60, 36, 85, 9
+		EDITTEXT -1, 153, 34, 40, 14, ES_NUMBER
+		CONTROL "", ID_CF_BUTTONROWS, "msctls_updown32", UDS_AUTOBUDDY | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_SETBUDDYINT | WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP, 153, 35, 40, 13
+		PUSHBUTTON "Abbrechen", IDCANCEL, 140, 109, 67, 16
+		DEFPUSHBUTTON "OK", IDOK, 70, 109, 67, 16
+		GROUPBOX "Optionen",	-1, 5, 55, 201, 48
+		AUTOCHECKBOX "Bestätigung vor dem Löschen", ID_CF_DELCONFIRM, 13, 67, 186, 12
+	END
+
+
+	// record keyboard shortcut
+
+	IDD_SHORTCUT DIALOGEX MOVEABLE LOADONCALL 20, 40, 180, 54, 0
+	STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE | WS_OVERLAPPED
+	CAPTION "Tastaturkürzel festlegen"
+	FONT 9, "MS Sans Serif", 700, 0
+	BEGIN
+		LTEXT "Tastenkombination:", -1, 10, 10, 129, 14
+		CONTROL "", ID_SC_KEY, "msctls_hotkey32", WS_CHILD | WS_VISIBLE | WS_BORDER | WS_TABSTOP, 80, 8, 80, 14
+		DEFPUSHBUTTON "OK", IDOK, 30, 33, 67, 16
+		PUSHBUTTON "Abbrechen", IDCANCEL, 100, 33, 67, 16
+	END
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		common strings
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+	STRINGTABLE
+	BEGIN
+		IDS_APPWINCLASS,			"micrommander main window class"
+		IDS_LOGOCLASS,				"micrommander logo window class"
+		IDS_LISTCLASS, 				"SysListView32"
+		IDS_EDITCLASS, 				"EDIT"
+		IDS_APPTITLE,					"Micrommander"
+		IDS_CONFIGFILE,		 		"micrommander.ini"
+		IDS_CFG_PARAM				"AppParameter"
+		IDS_CFG_LEFTLIST			"LeftList"
+		IDS_CFG_RIGHTLIST			"RightList"
+		IDS_CFG_LEFTEDIT			"LeftEdit"
+		IDS_CFG_RIGHTEDIT			"RightEdit"
+		IDS_CFG_BUTTONS			"Button_%02ld_%02ld"
+		IDS_DEF_LISTFONT,			"Arial"
+		IDS_DEF_EDITFONT,			"Arial"
+		IDS_DEF_BTNFONT,			"Arial"
+		IDS_CFG_LEFTPATH,			"LeftPath"
+		IDS_CFG_RIGHTPATH,		"RightPath"
+		IDS_CFG_SELECTCUR		"Selected"
+		IDS_CFG_SELECTOTH		"Unselected"
+		IDS_CFG_BUTTONROWS		"ButtonRows"
+		IDS_CFG_BUTTONCOLS		"ButtonCols"
+		IDS_CFG_SHOWMODE,		"ShowMode"
+		IDS_CFG_DELCONFIRM		"ConfirmDelete"
+		IDS_CFG_WINLEFT			"WindowLeft"
+		IDS_CFG_WINTOP				"WindowTop"
+		IDS_CFG_WINRIGHT			"WindowRight"
+		IDS_CFG_WINBOTTOM		"WindowBottom"
+		IDS_CFG_BUTTONTEXT		"Text"
+		IDS_CFG_BUTTONPARAM	"Parameter"
+		IDS_CFG_BUTTONCMD		"Command"
+		IDS_CFG_BUTTONSCUT		"ButtonShortcut"
+		IDS_CFG_VIEWBACK			"BackColor"
+		IDS_CFG_VIEWFORE			"ForeColor"
+		IDS_CFG_VIEWSIZE			"FontSize"
+		IDS_CFG_VIEWITALIC		"FontItalic"
+		IDS_CFG_VIEWWEIGHT		"FontWeight"
+		IDS_CFG_VIEWFONT			"FontName"
+		IDS_CFG_LISTNAMECOL		"ListNameCol"
+		IDS_CFG_LISTTYPECOL		"ListTypeCol"
+		IDS_CFG_LISTDATECOL		"ListDateCol"
+		IDS_CFG_LISTSIZECOL		"ListSizeCol"
+		IDS_CFG_LISTMODE			"ListMode"
+		IDS_DEFPATH					"c:\"
+		IDS_VERMASK					" v%1d.%d"
+		IDS_DECMASK					"%d"
+		IDS_SHELLOPEN				"open"
+	END
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		strings English
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+	STRINGTABLE
+	BEGIN
+		IDS_COLTYPE,					"Filetype"
+		IDS_COLDATE,					"Date"
+		IDS_COLNAME,					"Filename"
+		IDS_COLSIZE,					"Filesize"
+		IDS_COLACTION,				"Action"
+		IDS_COLSOURCE,				"Source"
+		IDS_COLTARGET,				"Destination"
+		IDS_DIRTAG,					"[DIR]"
+		IDS_DATEFORMAT,			"dd'.'MM'.'yyyy"
+		IDS_TIMEFORMAT,			"HH':'mm':'ss"
+		IDS_ABOUT_TEXT,			"Micrommander file manager.\n\nFind info: https://github.com/dp4/micrommander"
+		IDS_ABOUT_TITLE,			"About ..."
+		IDS_CURRENT_RUN			"Current process: %s"
+		IDS_STATUS_READY			"Ready."
+		IDS_KEY_SHIFT				"Shift + "
+		IDS_KEY_CTRL					"Control + "
+		IDS_DELCONF_TEXT			"WARNING: Do you really want to delete the data?"
+		IDS_CONFIRM_TITLE			"Are you sure?"
+		IDS_PROGRESS_DO			"Files"
+		IDS_PROGRESS_FAIL			"Error"
+		IDS_COPY_COLLECT			"Prepare copy .."
+		IDS_MOVE_COLLECT			"Prepare move .."
+		IDS_DELETE_COLLECT		"Prepare delete .."
+		IDS_CONFIRM_TEXT			"Running actions exist, do you want to cancel?"
+
+		IDS_ERROR_BASE + CMD_DELETE,	"Error during deleting a file."
+		IDS_ERROR_BASE + CMD_COPY,		"Error during copying a file."
+		IDS_ERROR_BASE + CMD_MKDIR,		"Error during creating a directory."
+		IDS_ERROR_BASE + CMD_MOVE,		"Error during moving a file / directory."
+
+		IDS_CMD_BASE + CMD_EMPTY,		"no action"
+		IDS_CMD_BASE + CMD_COPY,			"copy all selected files and directories to target folder."
+		IDS_CMD_BASE + CMD_MOVE,		"move all selected files and directories to target folder."
+		IDS_CMD_BASE + CMD_PARENT,		"go up one folder."
+		IDS_CMD_BASE + CMD_CD,			"go to folder. Use a complete path as parameter, like c:\\, c:\\my files oder \\\\server\\data."
+		IDS_CMD_BASE + CMD_ALL,			"select all list entries."
+		IDS_CMD_BASE + CMD_NONE,			"deselect all list entries."
+		IDS_CMD_BASE + CMD_BYTE,			"show number and size of selected files and folders."
+		IDS_CMD_BASE + CMD_MKDIR,		"create a new folder. A dialog will ask for the name of the new folder."
+		IDS_CMD_BASE + CMD_DELETE,		"delete all selected files and folders."
+		IDS_CMD_BASE + CMD_EXIT,			"exit program."
+		IDS_CMD_BASE + CMD_ROOT,		"go to root folder."
+		IDS_CMD_BASE + CMD_RENAME,		"rename all selected files. A dialog will ask for the new name(s)."
+		IDS_CMD_BASE + CMD_EXECUTE,	"opens a program or document. Specify a file to open. Examples:\n\n  iexplore.exe\n  calc\n  https://github.com/dp4/micrommander"
+		IDS_CMD_BASE + CMD_FORMAT,		"opens the windows dialog for formating a drive."
+
+		IDS_CMDCAT_DRIVES		"drive actions"
+		IDS_CMDCAT_EXTERN		"exteral actions"
+		IDS_CMDCAT_FILES			"file actions"
+		IDS_CMDCAT_FOLDERS		"folder actions"
+		IDS_CMDCAT_DEFAULT		"common"
+
+		IDS_CMD_EMPTY,				"no action"
+		IDS_CMD_COPY,				"copy files"
+		IDS_CMD_MOVE,				"move files"
+		IDS_CMD_PARENT,			"go up one folder"
+		IDS_CMD_CD,					"go to folder"
+		IDS_CMD_ALL,					"select all"
+		IDS_CMD_NONE,				"select none"
+		IDS_CMD_BYTE,				"size of files"
+		IDS_CMD_MKDIR,				"create folder"
+		IDS_CMD_DELETE,			"delete files"
+		IDS_CMD_EXIT,				"exit program"
+		IDS_CMD_ROOT,				"goto root folder"
+		IDS_CMD_RENAME,			"rename files"
+		IDS_CMD_EXECUTE,			"execute document"
+		IDS_CMD_FORMAT,			"format drive"
+
+		IDS_CMDERR_RETRY,			"try again"
+		IDS_CMDERR_IGNORE,		"ignore"
+		IDS_CMDERR_IGNORE_ALL,	"ignore all errors"
+	END
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		strings German
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+	STRINGTABLE
+	BEGIN
+		IDS_COLTYPE,					"Dateityp"
+		IDS_COLDATE,					"Datum"
+		IDS_COLNAME,					"Dateiname"
+		IDS_COLSIZE,					"Dateigröße"
+		IDS_COLACTION,				"Aktion"
+		IDS_COLSOURCE,				"Quelle"
+		IDS_COLTARGET,				"Ziel"
+		IDS_DIRTAG,					"[Ordner]"
+		IDS_DATEFORMAT,			"dd'.'MM'.'yyyy"
+		IDS_TIMEFORMAT,			"HH':'mm':'ss"
+		IDS_ABOUT_TEXT,			"Micrommander Dateimanager.\n\nMehr Info's: https://github.com/dp4/micrommander"
+		IDS_ABOUT_TITLE,			"Über ..."
+		IDS_CURRENT_RUN			"Aktueller Prozess: %s"
+		IDS_STATUS_READY			"Bereit."
+		IDS_KEY_SHIFT				"Umschalt + "
+		IDS_KEY_CTRL					"Steuerung + "
+		IDS_DELCONF_TEXT			"ACHTUNG: Wollen Sie die Daten wirklich löschen?"
+		IDS_CONFIRM_TITLE			"Sind Sie sicher?"
+		IDS_PROGRESS_DO			"Dateien"
+		IDS_PROGRESS_FAIL			"Fehler"
+		IDS_COPY_COLLECT			"Bereite Kopieren vor .."
+		IDS_MOVE_COLLECT			"Bereite Verschieben vor .."
+		IDS_DELETE_COLLECT		"Bereite Löschen vor .."
+		IDS_CONFIRM_TEXT			"Es laufen noch Aktionen, sollen diese abgebrochen werden?"
+
+		IDS_ERROR_BASE + CMD_DELETE,	"Fehler beim Löschen einer Datei."
+		IDS_ERROR_BASE + CMD_COPY,		"Fehler beim Kopieren einer Datei."
+		IDS_ERROR_BASE + CMD_MKDIR,		"Fehler beim Erstellen eines Verzeichnisses."
+		IDS_ERROR_BASE + CMD_MOVE,		"Fehler beim Verschieben der Datei/des Verzeichnisses."
+
+		IDS_CMD_BASE + CMD_EMPTY,		"keine Aktion"
+		IDS_CMD_BASE + CMD_COPY,			"kopiert alle markierten Dateien und Ordner in das Zielverzeichnis."
+		IDS_CMD_BASE + CMD_MOVE,		"verschiebt alle markierten Dateien und Ordern in das Zielverzeichnis."
+		IDS_CMD_BASE + CMD_PARENT,		"geht ein Verzeichnis höher."
+		IDS_CMD_BASE + CMD_CD,			"geht zum angegeben Verzeichnis. Verwenden Sie eine komplette Pfadangabe als Parameter, z.B. c:\\, c:\\eigene dateien oder \\\\server\\daten."
+		IDS_CMD_BASE + CMD_ALL,			"markiert alle Einträge in der Liste."
+		IDS_CMD_BASE + CMD_NONE,			"demarkiert alle Einträge in der Liste."
+		IDS_CMD_BASE + CMD_BYTE,			"zeigt die Anzahl und Größe der markierten Dateien und Ordner."
+		IDS_CMD_BASE + CMD_MKDIR,		"legt ein neues Verzeichnis an. Es wird ein Dialog zur Eingabe des gewünschten Namens angezeigt."
+		IDS_CMD_BASE + CMD_DELETE,		"löscht alle Einträge in der Liste."
+		IDS_CMD_BASE + CMD_EXIT,			"beendet das Programm."
+		IDS_CMD_BASE + CMD_ROOT,		"geht zum höchsten Verzeichnis auf dem aktuellen Datenträger."
+		IDS_CMD_BASE + CMD_RENAME,		"benennt alle markierten Dateien und Order um. Es wird ein Dialog zur Eingabe des gewünschten neuen Namens angezeigt."
+		IDS_CMD_BASE + CMD_EXECUTE,	"führt ein Programm bzw. Dokument aus. Geben Sie einen Dateinamen an. Beispiele:\n\n  iexplore.exe\n  calc\n  https://github.com/dp4/micrommander"
+		IDS_CMD_BASE + CMD_FORMAT,		"öffnet den Windows Dialog zum Formatieren eines Datenträgers."
+
+		IDS_CMDCAT_DRIVES		"Datenträgeraktionen"
+		IDS_CMDCAT_EXTERN		"Externe Aktionen"
+		IDS_CMDCAT_FILES			"Dateiaktionen"
+		IDS_CMDCAT_FOLDERS		"Verzeichnisaktionen"
+		IDS_CMDCAT_DEFAULT		"Allgemeines"
+
+		IDS_CMD_EMPTY,				"keine Aktion"
+		IDS_CMD_COPY,				"Dateien kopieren"
+		IDS_CMD_MOVE,				"Dateien verschieben"
+		IDS_CMD_PARENT,			"gehe ein Verzeichnis höher"
+		IDS_CMD_CD,					"gehe zum Verzeichnis"
+		IDS_CMD_ALL,					"alles auswählen"
+		IDS_CMD_NONE,				"nichts auswählen"
+		IDS_CMD_BYTE,				"Größe der Dateien"
+		IDS_CMD_MKDIR,				"Verzeichnis erstellen"
+		IDS_CMD_DELETE,			"Dateien löschen"
+		IDS_CMD_EXIT,				"Programm beenden"
+		IDS_CMD_ROOT,				"gehe zum Wurzelverzeichnis"
+		IDS_CMD_RENAME,			"Datei umbenennen"
+		IDS_CMD_EXECUTE,			"Datei ausführen"
+		IDS_CMD_FORMAT,			"Datenträger formatieren"
+
+		IDS_CMDERR_RETRY,			"Erneut versuchen"
+		IDS_CMDERR_IGNORE,		"Übergehen"
+		IDS_CMDERR_IGNORE_ALL,	"Alle Fehler übergehen"
+	END
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//		version information
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+IDV_VERSION VERSIONINFO MOVEABLE LOADONCALL 
+	FILEVERSION			1, 0, 0, 0
+	PRODUCTVERSION	1, 0, 0, 0
+	FILETYPE				VFT_APP
+	BEGIN
+		BLOCK "StringFileInfo"
+		BEGIN
+			BLOCK "040704E4"
+			BEGIN
+				VALUE "CompanyName", "digital performance\0"
+				VALUE "FileDescription", "\0"
+				VALUE "FileVersion", "1.0\0"
+				VALUE "InternalName", "Micrommander\0"
+				VALUE "OriginalFilename", "\0"
+				VALUE "ProductName", "Micrommander for Microsoft Windows x64\0"
+				VALUE "ProductVersion", "1.0.0.161006\0"
+			END
+		END
+	
+		BLOCK "VarFileInfo"
+		BEGIN
+			VALUE "Translation", 0x409, 0
+		END
+	END

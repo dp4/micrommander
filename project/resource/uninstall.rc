@@ -1,0 +1,79 @@
+//-----------------------------------------------------------------------------------------------------------------------------------------
+// description:	x64 asm source for "commander style" windows file manager - uninstall resources
+// note:	copyright © by digital performance 1997 - 2014, author S. Deutsch, A. Voelskow
+// license:
+//
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY// without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// assembler:	Visual Studio 2013
+// last update:	2013-02-20 - Deutsch - make x64
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+	#include	"winver.h"
+	#include	"winresrc.h"
+
+
+//----------------------------------------------------------------------------------
+// 	gfx resources
+//----------------------------------------------------------------------------------
+
+	1200	ICON PRELOAD	"uninstall.ico"
+
+
+//----------------------------------------------------------------------------------
+// 	strings
+//----------------------------------------------------------------------------------
+
+	STRINGTABLE PRELOAD LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+	BEGIN
+		10000,	"Micrommander uninstaller .."
+		10001,	"Are you shure to remove Micrommander?"
+		10002,	"Micrommander has been removed from your system."
+	END
+
+	STRINGTABLE PRELOAD LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+	BEGIN
+		10000,	"Micrommander Uninstaller .."
+		10001,	"Sind Sie sicher, Micrommander zu entfernen?"
+		10002,	"Micrommander wurde von Ihrem System entfernt."
+	END
+
+
+//----------------------------------------------------------------------------------
+// 	version information
+//----------------------------------------------------------------------------------
+
+1 VERSIONINFO
+
+	FILEVERSION			1, 0, 0, 0
+	PRODUCTVERSION	1, 0, 0, 0
+	FILEOS					VOS__WINDOWS32
+	FILETYPE				VFT_APP
+	FILEFLAGS				0
+	BEGIN
+		BLOCK "StringFileInfo"
+		BEGIN
+			BLOCK "04090000"
+			BEGIN
+				VALUE "CompanyName", "digital performance\0"
+				VALUE "FileDescription", "Uninstaller v1.0\0"
+				VALUE "FileVersion", "1.0\0"
+				VALUE "InternalName", "uninstaller\0"
+				VALUE "LegalCopyright", "digital performance \251 1998-2016\0"
+				VALUE "OriginalFilename", "miuninst.exe\0"
+				VALUE "ProductName", "Micrommander Uninstaller\0"
+				VALUE "ProductVersion",	"1.0\0"
+			END
+		END
+
+		BLOCK "VarFileInfo"
+		BEGIN
+			VALUE "Translation", 0x409, 0
+		END
+	END

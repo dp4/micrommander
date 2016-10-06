@@ -1,0 +1,3 @@
+signtool sign /p <password> /f <private key pfx> /d "micrommander" /du "https://github.com/dp4/micrommander/" /t http://timestamp.comodoca.com/authenticode /v micrommander.exe
+signtool sign /p <password> /f <private key pfx> /d "micrommander" /du "https://github.com/dp4/micrommander/" /t http://timestamp.comodoca.com/authenticode /v uninstall.exe
+signtool sign /p <password> /f <private key pfx> /d "micrommander" /du "https://github.com/dp4/micrommander/" /t http://timestamp.comodoca.com/authenticode /v setup.exe

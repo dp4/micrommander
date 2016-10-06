@@ -1,0 +1,292 @@
+//-----------------------------------------------------------------------------------------------------------------------------------------
+// description:	x64 asm source for "commander style" windows file manager - setup resources
+// note:	copyright © by digital performance 1997 - 2014, author S. Deutsch, A. Voelskow
+// license:
+//
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY// without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// assembler:	Visual Studio 2013
+// last update:	2013-02-20 - Deutsch - make x64
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+#	include	"winver.h"
+#	include	"winresrc.h"
+
+#	include	"..\include\setup.h"
+
+
+//---------------------------------------------------------------------------------------------------------------------
+// 	gfx resources
+//---------------------------------------------------------------------------------------------------------------------
+
+	IDI_MAIN			ICON PRELOAD		"setup.ico"
+	IDI_HOOK			ICON PRELOAD		"hook.ico"
+	IDB_WELCOME		BITMAP				"welcome.bmp"
+	IDB_LICENSE		BITMAP				"license.bmp"
+
+
+//----------------------------------------------------------------------------------
+// 	special defines
+//----------------------------------------------------------------------------------
+
+
+	#define	WELCOME_DE	"Dieses Installationsprogramm wird den Micrommander Dateimanager auf Ihrem Computer installieren."
+
+
+//----------------------------------------------------------------------------------
+// 	binary file resources
+//----------------------------------------------------------------------------------
+
+	LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL 
+
+	IDR_BIN_LICENSE		RCDATA  "license_en.txt"
+
+	LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+
+	IDR_BIN_LICENSE		RCDATA  "license_de.txt"
+
+	IDR_BIN_FILE1	RCDATA	"micrommander.exe"
+	IDR_BIN_FILE2	RCDATA	"default.ini"
+	IDR_BIN_FILE3	RCDATA	"uninstall.exe"
+
+
+//----------------------------------------------------------------------------------
+// 	strings
+//----------------------------------------------------------------------------------
+
+	STRINGTABLE PRELOAD LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+	BEGIN
+		IDS_PRODUCTNAME,		"Micrommander"
+		IDS_CONFIRM_TITLE,	"Setup - confirmation .."
+		IDS_SUCCESS_TITLE,	"Installation done .."
+		IDS_SUCCESS_TEXT, 	"The installation is successful done."
+		IDS_WANT_QUIT,			"Do you really want to cancel the installation?"
+		IDS_DEFAULT_PATH,		"Micrommander"
+		IDS_CREATE_DIR,			"The path ""%ls"" does not exist.\12\15Should it be created?"
+		IDS_ERROR_TITLE,		"Error during installation"
+		IDS_NOT_EMPTY,			"The chosen path ""%ls"" is not empty!\12\15Please select an empty or non-existing path."
+		IDS_CHOOSE_PATH,		"Please choose a path for installation"
+		IDS_PROGRAM_PATH,	"c:\\program files"
+	END
+
+	STRINGTABLE PRELOAD LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+	BEGIN
+		IDS_PRODUCTNAME,		"Micrommander"
+		IDS_CONFIRM_TITLE,	"Setup - Bestätigung .."
+		IDS_SUCCESS_TITLE,	"Installation abgeschlossen .."
+		IDS_SUCCESS_TEXT, 	"Die Installation wurde erfolgreich abgeschlossen."
+		IDS_WANT_QUIT,			"Wollen Sie die Installation wirklich beenden?"
+		IDS_DEFAULT_PATH,		"Micrommander"
+		IDS_CREATE_DIR,			"Das Verzeichnis ""%ls"" existiert nicht.\12\15Soll es angelegt werden?"
+		IDS_ERROR_TITLE,		"Fehler während der Installation"
+		IDS_NOT_EMPTY,			"Das gewählte Verzeichnis ""%ls"" ist nicht leer!\12\15Geben Sie den Namen eines noch nicht existierenden oder eines leeren Verzeichnisses an."
+		IDS_CHOOSE_PATH,		"Bitte wählen Sie ein Verzeichnis für die Installation"
+		IDS_PROGRAM_PATH,	"C:\\Programme"
+	END
+
+
+//----------------------------------------------------------------------------------
+// 	setup dialogs English
+//----------------------------------------------------------------------------------
+
+IDD_WELCOME DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_WELCOME, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 83, 128
+	CONTROL "", -1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 108, 0, 12, 193
+	CONTROL "", -1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 310, 0, 20, 193
+	CONTROL "\nWelcome!", IDC_CAPTION, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 120, 0, 210, 40
+	LTEXT "This install program will install the micrommander file utility on your computer.", -1, SS_LEFT | WS_CHILD | WS_VISIBLE, 120, 40, 210, 153
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "&Next >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Cancel", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_LICENSE DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "", IDC_LIC_FIELD, "EDIT", ES_LEFT | ES_MULTILINE | ES_READONLY | WS_CHILD | WS_VISIBLE | WS_VSCROLL, 20, 40, 310, 153
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Back", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Accept >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Cancel", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_DIRECTORY DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "Target path:", IDC_CAPTION, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 20, 107, 204, 26
+	CONTROL "", ID_DI_FRAME, "BUTTON", BS_GROUPBOX | BS_LEFT | WS_CHILD | WS_VISIBLE, 20, 118, 290, 32
+	CONTROL "", ID_DI_PATH, "EDIT", ES_LEFT | WS_BORDER | WS_CHILD | WS_VISIBLE, 32, 130, 222, 13
+	CONTROL "Choose ..", ID_DI_BUTTON, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE, 258, 130, 40, 13
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Back", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Accept >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Cancel", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_OPTIONS DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Setup options"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "Options:", -1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 96, 45, 204, 32
+	CONTROL "Create desktop &link", ID_OP_DESKTOP, "BUTTON", BS_AUTOCHECKBOX | BS_LEFT | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 99, 90, 201, 11
+	CONTROL "Create startmenu &entry", ID_OP_START, "BUTTON", BS_AUTOCHECKBOX | BS_LEFT | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 99, 104, 201, 11
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Back", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Accept >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Cancel", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_PROGRESS DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "", IDC_HOOK1, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 60, 20, 14
+	CONTROL " extract and copy files", IDC_STEP1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 60, 190, 14
+	CONTROL "", IDC_HOOK2, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 80, 20, 14
+	CONTROL " install desktop link", IDC_STEP2 "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 80, 190, 14
+	CONTROL "", IDC_HOOK3, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 100, 20, 14
+	CONTROL " install startmenu link", IDC_STEP3 "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 100, 190, 14
+	CONTROL "", IDC_HOOK4, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 120, 20, 14
+	CONTROL " prepare program for uninstallation", IDC_STEP4 "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 120, 190, 14
+	CONTROL "", IDC_PROGRESSBAR, "msctls_progress32", WS_CHILD | WS_VISIBLE | WS_TABSTOP, 4, 170, 322, 11
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Back", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Complete", IDOK, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Cancel", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+
+//----------------------------------------------------------------------------------
+// 	setup dialogs German
+//----------------------------------------------------------------------------------
+
+IDD_WELCOME DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander Installation"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_WELCOME, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 83, 128
+	CONTROL "", -1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 108, 0, 12, 193
+	CONTROL "", -1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 280, 0, 50, 193
+	CONTROL "\nWillkommen!", IDC_CAPTION, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 120, 0, 210, 40
+	CONTROL WELCOME_DE, -1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 120, 40, 180, 153
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "&Weiter >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Abbrechen", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_LICENSE DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander Installation"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "", IDC_LIC_FIELD, "EDIT", ES_LEFT | ES_MULTILINE | ES_READONLY | WS_CHILD | WS_VISIBLE | WS_VSCROLL, 20, 40, 310, 153
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Zurück", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Akzeptieren >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Abbrechen", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_DIRECTORY DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander Installation"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "Zielverzeichnis:", IDC_CAPTION, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 20, 107, 204, 26
+	CONTROL "", ID_DI_FRAME, "BUTTON", BS_GROUPBOX | BS_LEFT | WS_CHILD | WS_VISIBLE, 20, 118, 290, 32
+	CONTROL "", ID_DI_PATH, "EDIT", ES_LEFT | WS_BORDER | WS_CHILD | WS_VISIBLE, 32, 130, 222, 13
+	CONTROL "Suche ..", ID_DI_BUTTON, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE, 258, 130, 40, 13
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Zurück", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Weiter >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Abbrechen", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_OPTIONS DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Optionen einstellen"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "Optionen", -1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE, 96, 55, 204, 32
+	CONTROL "Verknüpfung auf dem &Desktop erstellen", ID_OP_DESKTOP, "BUTTON", BS_AUTOCHECKBOX | BS_LEFT | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 99, 80, 201, 11
+	CONTROL "Eintrag im &Startmenü vornehmen", ID_OP_START, "BUTTON", BS_AUTOCHECKBOX | BS_LEFT | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 99, 94, 201, 11
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Zurück", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Weiter >", IDC_NEXTPAGE, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Abbrechen", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+IDD_PROGRESS DIALOGEX 167, 79, 330, 215 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
+STYLE DS_MODALFRAME | WS_OVERLAPPED | WS_CAPTION | WS_VISIBLE | WS_SYSMENU | DS_CENTER
+CAPTION "Micrommander Installation"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL IDB_LICENSE, -1, "STATIC", SS_BITMAP | SS_REALSIZEIMAGE | WS_CHILD | WS_VISIBLE, 0, 0, 330, 60
+	CONTROL "", IDC_HOOK1, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 60, 20, 14
+	CONTROL " Extrahieren und Kopieren der Dateien", IDC_STEP1, "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 60, 190, 14
+	CONTROL "", IDC_HOOK2, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 80, 20, 14
+	CONTROL " Verknüpfung auf dem Arbeitsplatz", IDC_STEP2 "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 80, 190, 14
+	CONTROL "", IDC_HOOK3, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 100, 20, 14
+	CONTROL " Startmenü installieren", IDC_STEP3 "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 100, 190, 14
+	CONTROL "", IDC_HOOK4, "STATIC", SS_ICON | WS_CHILD | WS_VISIBLE, 20, 120, 20, 14
+	CONTROL " Vorbereitung des Programmes zum Uninstallieren", IDC_STEP4 "STATIC", SS_LEFT | WS_CHILD | WS_VISIBLE | WS_DISABLED, 40, 120, 190, 14
+	CONTROL "", IDC_PROGRESSBAR, "msctls_progress32", WS_CHILD | WS_VISIBLE | WS_TABSTOP, 4, 170, 322, 11
+	CONTROL "", -1, "STATIC", SS_SUNKEN | WS_CHILD | WS_VISIBLE, 0, 193, 330, 1
+	CONTROL "< &Zurück", IDC_PREVPAGE, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 124, 198, 60, 14
+	CONTROL "&Fertigstellen", IDOK, "BUTTON", BS_DEFPUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 186, 198, 60, 14
+	CONTROL "Abbrechen", IDCANCEL, "BUTTON", BS_PUSHBUTTON | WS_CHILD | WS_VISIBLE | WS_TABSTOP, 266, 198, 60, 14
+END
+
+
+//----------------------------------------------------------------------------------
+// 	version information
+//----------------------------------------------------------------------------------
+
+1	VERSIONINFO
+	FILEVERSION			1, 0, 0, 0
+	PRODUCTVERSION	1, 0, 0, 0
+	FILEOS					VOS__WINDOWS32
+	FILETYPE				VFT_APP
+	FILEFLAGS				0
+	BEGIN
+		BLOCK	"StringFileInfo"
+		BEGIN
+			BLOCK	"04090000"
+			BEGIN
+				VALUE "FileDescription", "Micrommander Setup\0"
+				VALUE "ProductName", "Micrommander\0"
+				VALUE "InternalName", "Micrommander Setup\0"
+				VALUE "OriginalFilename", "setup.exe\0"
+				VALUE "FileVersion", "1.0\0"
+				VALUE "ProductVersion", "1.0\0"
+			END
+		END
+
+		BLOCK "VarFileInfo"
+		BEGIN
+			VALUE "Translation", 0x409, 0
+		END
+	END
