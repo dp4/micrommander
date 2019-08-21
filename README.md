@@ -12,7 +12,7 @@ Most of the common programming paradigms are not a property of the language, but
 This project features a fully object orientated style, multi threaded working and all the Windows features for x64 programs.
 
 ### How to work with assembly language?
-Visual Studio 2013 contains the MASM (Microsoft Macro Assembler) which will be able to assemble the source files out of the box. If you encounter any problems with the project, please don't hesitate to contact.
+Visual Studio contains the MASM (Microsoft Macro Assembler) which will be able to assemble the source files out of the box. If you encounter any problems with the project, please don't hesitate to contact.
 
 For better layout of the ASM sources we use a VStudio plugin for formating the source code. This will become a sub project in near future (hopefully). Currently the plugin is not worth for a public release.
 
@@ -20,5 +20,5 @@ For better layout of the ASM sources we use a VStudio plugin for formating the s
 Authors want to release this project under open source just as a proof of concept. **Use the tool on your files on your own risk!**
 
 ### Files and folders
-Find Visual Studio 2013 project in project folder under build/visual.
+Find Visual Studio 2017 project in project folder under build/visual.
 Compiled and signed setup.exe and executable in main folder.
