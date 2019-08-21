@@ -1,0 +1,7 @@
+*.sdf
+Debug
+Release
+*.suo
+*.db
+*.db-shm
+*.db-wal
